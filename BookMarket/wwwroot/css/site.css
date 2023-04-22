@@ -16,3 +16,68 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.BookBackground {
+    position: relative;
+    box-sizing: border-box;
+    width: 528px;
+    height: 403px;
+    left: 0px;
+    top: 0px;
+    background: rgba(255, 209, 103, 0.63);
+    border: 1px solid #000000;
+    border-radius: 33px;
+}
+
+.BookImage {
+    position: absolute;
+    width: 452px;
+    height: 255px;
+    left: 38px;
+    top: 29px;
+    background: #D9D9D9;
+    border-radius: 13px;
+}
+
+.Price {
+    position: absolute;
+    width: 68px;
+    height: 30px;
+    left: 32px;
+    top: 312px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 25px;
+    line-height: 30px;
+    color: #000000;
+}
+
+.BookName {
+    position: absolute;
+    width: 286px;
+    height: 22px;
+    left: 32px;
+    bottom: 23px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    color: #000000;
+}
+
+.Author {
+    position: absolute;
+    width: 120px;
+    height: 22px;
+    right: 79px;
+    bottom: 23px;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    /* identical to box height */
+    color: #000000;
+}

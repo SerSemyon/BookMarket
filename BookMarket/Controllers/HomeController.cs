@@ -7,15 +7,18 @@ namespace BookMarket.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly DbbookMarketContext dbContext;
 
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+            dbContext = new DbbookMarketContext();
         }
 
         public IActionResult Index()
         {
-            return View();
+            List<Book> books = dbContext.Books.ToList();
+            return View(books);
         }
 
         public IActionResult Privacy()
