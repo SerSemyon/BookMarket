@@ -1,0 +1,83 @@
+﻿@model IEnumerable<BookMarket.Account>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AccName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccLastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccMiddleName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccGender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccBirthday)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccEmail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccPhoneRegistration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AccHashPassword)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccLastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccMiddleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccGender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccBirthday)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccPhoneRegistration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AccHashPassword)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type.TypeId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.AccountId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.AccountId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.AccountId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
