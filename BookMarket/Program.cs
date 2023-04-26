@@ -2,6 +2,9 @@ namespace BookMarket
 {
     public class Program
     {
+        public static Account? User;
+        public static int userId = -1;
+        public static string? HashPassword;
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
