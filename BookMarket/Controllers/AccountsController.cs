@@ -48,13 +48,13 @@ namespace BookMarket.Controllers
         // GET: Accounts/Create
         public IActionResult Create()
         {
-            ViewData["TypeId"] = new SelectList(_context.AccountTypes, "TypeId", "TypeId");
+            ViewData["TypeName"] = new SelectList(_context.AccountTypes.Where<AccountType>(x => x.TypeName != "Администратор"), "TypeName", "TypeName");
             return View();
         }
 
         public IActionResult Registration()
         {
-            ViewData["TypeId"] = new SelectList(_context.AccountTypes, "TypeId", "TypeId");
+            ViewData["TypeName"] = new SelectList(_context.AccountTypes.Where<AccountType>(x => x.TypeName != "Администратор" ), "TypeName", "TypeName");
             return View();
         }
 
@@ -63,7 +63,7 @@ namespace BookMarket.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("AccountId,TypeId,AccName,AccLastName,AccMiddleName,AccGender,AccBirthday,AccEmail,AccPhoneRegistration,AccHashPassword")] Account account)
+        public async Task<IActionResult> Create([Bind("AccountId, TypeName,AccName,AccLastName,AccMiddleName,AccGender,AccBirthday,AccEmail,AccPhoneRegistration,AccHashPassword")] Account account)
         {
             if (ModelState.IsValid)
             {
@@ -71,7 +71,12 @@ namespace BookMarket.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TypeId"] = new SelectList(_context.AccountTypes, "TypeId", "TypeId", account.TypeId);
+
+/*            var list = new SelectList(_context.AccountTypes, "TypeName", "TypeName", account.Type.TypeName);
+            list.Select()
+            Console.WriteLine(list);*/
+
+            ViewData["TypeName"] = new SelectList(_context.AccountTypes, "TypeName", "TypeName", account.Type.TypeName);
             return View(account);
         }
 
@@ -88,7 +93,7 @@ namespace BookMarket.Controllers
             {
                 return NotFound();
             }
-            ViewData["TypeId"] = new SelectList(_context.AccountTypes, "TypeId", "TypeId", account.TypeId);
+            ViewData["TypeName"] = new SelectList(_context.AccountTypes.Where<AccountType>(x => x.TypeName != "Администратор" ), "TypeName", "TypeName", account.Type.TypeName);
             return View(account);
         }
 
@@ -97,7 +102,7 @@ namespace BookMarket.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("AccountId,TypeId,AccName,AccLastName,AccMiddleName,AccGender,AccBirthday,AccEmail,AccPhoneRegistration,AccHashPassword")] Account account)
+        public async Task<IActionResult> Edit(int id, [Bind("AccountId,TypeName,AccName,AccLastName,AccMiddleName,AccGender,AccBirthday,AccEmail,AccPhoneRegistration,AccHashPassword")] Account account)
         {
             if (id != account.AccountId)
             {
@@ -124,7 +129,7 @@ namespace BookMarket.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TypeId"] = new SelectList(_context.AccountTypes, "TypeId", "TypeId", account.TypeId);
+            ViewData["TypeName"] = new SelectList(_context.AccountTypes, "TypeName", "TypeName", account.Type.TypeName);
             return View(account);
         }
 
