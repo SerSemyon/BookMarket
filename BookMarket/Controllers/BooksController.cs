@@ -18,6 +18,15 @@ namespace BookMarket.Controllers
             _context = new DbbookMarketContext();
         }
 
+        public async Task<IActionResult> Show(int id)
+        {
+            var book = await _context.Books
+                .Include(b => b.LegalEntity)
+                .Include(b => b.Phouse)
+                .FirstOrDefaultAsync(m => m.BookId == id);
+            return View(book);
+        }
+
         // GET: Books
         public async Task<IActionResult> Index()
         {
