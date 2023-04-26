@@ -13,9 +13,9 @@ namespace BookMarket.Controllers
     {
         private readonly DbbookMarketContext _context;
 
-        public BooksController(DbbookMarketContext context)
+        public BooksController()
         {
-            _context = context;
+            _context = new DbbookMarketContext();
         }
 
         // GET: Books
