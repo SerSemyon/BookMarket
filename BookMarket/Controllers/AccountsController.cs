@@ -28,10 +28,6 @@ namespace BookMarket.Controllers
         // GET: Accounts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == -1)
-            {
-                return View("Create");
-            }
 
             if (id == null || _context.Accounts == null)
             {
@@ -51,6 +47,12 @@ namespace BookMarket.Controllers
 
         // GET: Accounts/Create
         public IActionResult Create()
+        {
+            ViewData["TypeId"] = new SelectList(_context.AccountTypes, "TypeId", "TypeId");
+            return View();
+        }
+
+        public IActionResult Registration()
         {
             ViewData["TypeId"] = new SelectList(_context.AccountTypes, "TypeId", "TypeId");
             return View();
