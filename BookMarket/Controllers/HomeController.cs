@@ -18,7 +18,6 @@ namespace BookMarket.Controllers
         public IActionResult Index()
         {
             List<Book> books = dbContext.Books.ToList();
-
             return View(books);
         }
 
