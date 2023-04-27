@@ -21,6 +21,13 @@ namespace BookMarket.Controllers
             return View(books);
         }
 
+        [Route("{name}")]
+        public IActionResult Index(string name)
+        {
+            List<Book> books = dbContext.Books.Where(b => b.BookName.ToLower().Contains(name.ToLower())).ToList();
+            return View(books);
+        }
+
         public IActionResult Privacy()
         {
             return View();
