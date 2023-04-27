@@ -1,7 +1,7 @@
 ﻿@model BookMarket.Book
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = @Html.DisplayFor(model => model.BookName);
     int rat = Convert.ToInt32(Model.BookRating);
 }
 
@@ -22,24 +22,24 @@
     }
 
     <dl class="row">
-        <dt class = "col-sm-2">
-            Осталось книг:
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BookAmount)
-        </dd>
-        <dt class = "col-sm-2">
-            Описание:
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BookDescription)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BookImagePath)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BookImagePath)
-        </dd>
+        @if (Model.BookAmount == 0)
+        {
+            <dt class="col-sm-2">
+                Нет в наличии
+            </dt>
+            <dd class="col-sm-10">
+                
+            </dd>
+        }
+        else if(Model.BookAmount < 100)
+        {
+            <dt class="col-sm-2">
+                Осталось книг:
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.BookAmount)
+            </dd>
+        }
         <dt class = "col-sm-2">
             Продавец:
         </dt>
@@ -52,9 +52,11 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Phouse.PhouseId)
         </dd>
+        <dt class="col-sm-2">
+            Описание:
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BookDescription)
+        </dd>
     </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.BookId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
 </div>
