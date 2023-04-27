@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BookMarket;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace BookMarket.Controllers
 {
@@ -24,6 +25,8 @@ namespace BookMarket.Controllers
                 .Include(b => b.LegalEntity)
                 .Include(b => b.Phouse)
                 .FirstOrDefaultAsync(m => m.BookId == id);
+            ViewBag.feedbacks = _context.Feedbacks.Where(f => f.BookId == id).ToList();
+            //_context.Feedbacks.ToList()[0]
             return View(book);
         }
 

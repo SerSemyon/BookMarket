@@ -60,3 +60,11 @@
         </dd>
     </dl>
 </div>
+
+<h2>Всего комментариев: @ViewBag.feedbacks.Count</h2>
+<ul>
+    @foreach (var comment in ViewBag.feedbacks)
+    {
+        <li>@comment.FbDescription;</li>
+    }
+</ul>
