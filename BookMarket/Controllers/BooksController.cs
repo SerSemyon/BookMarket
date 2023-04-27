@@ -25,7 +25,7 @@ namespace BookMarket.Controllers
                 .Include(b => b.LegalEntity)
                 .Include(b => b.Phouse)
                 .FirstOrDefaultAsync(m => m.BookId == id);
-            ViewBag.feedbacks = _context.Feedbacks.Where(f => f.BookId == id).ToList();
+            ViewBag.feedbacks = _context.Feedbacks.Where(f => f.BookId == id).Include(f => f.Account).ToList();
             //_context.Feedbacks.ToList()[0]
             return View(book);
         }

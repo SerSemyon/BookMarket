@@ -65,6 +65,33 @@
 <ul>
     @foreach (var comment in ViewBag.feedbacks)
     {
-        <li>@comment.FbDescription;</li>
+        // wefwef
+        <li>
+            @for (int i = 0; i < @Convert.ToInt32(comment.FbRating); i++)
+            {
+                <a>&#x2605</a>
+            }
+            @for (int i = @Convert.ToInt32(comment.FbRating); i < 5; i++)
+            {
+                <a>&#x2730</a>
+            }
+            @if (comment.FbIsAnonim == true)
+            {
+                    <p>Анонимный пользователь</p>
+                }else
+                {
+                    string full_name = comment.Account.AccName;
+                    if (comment.Account.AccLastName != null )
+                    {
+                        full_name += " " + comment.Account.AccLastName;
+                    }
+                    if (comment.Account.AccMiddleName != null)
+                    {
+                        full_name += " " + comment.Account.AccMiddleName;
+                    }
+                    <p>Пользователь: @full_name</p>
+            }
+            <p>Описание: @comment.FbDescription</p>
+        </li>
     }
 </ul>
