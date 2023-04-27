@@ -2,6 +2,9 @@
 
 @{
     ViewData["Title"] = "Регистрация";
+    List<string> genders = new List<string>(2);
+    genders.Add("м");
+    genders.Add("ж");
 }
 
 <h1>Регистрация</h1>
@@ -11,41 +14,41 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Type.TypeName" class="control-label"></label>
-                <select asp-for="Type.TypeName" class ="form-control" asp-items="ViewBag.TypeName "></select>
+                Роль
+                <select asp-for="Type.TypeName" class ="form-control" asp-items="ViewBag.TypeName"></select>
             </div>
             <div class="form-group">
-                <label asp-for="AccName" class="control-label"></label>
+                <label> Имя </label>
                 <input asp-for="AccName" class="form-control" />
                 <span asp-validation-for="AccName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AccLastName" class="control-label"></label>
+                <label> Фамилия </label>
                 <input asp-for="AccLastName" class="form-control" />
                 <span asp-validation-for="AccLastName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AccMiddleName" class="control-label"></label>
+                <label> Отчество </label>
                 <input asp-for="AccMiddleName" class="form-control" />
                 <span asp-validation-for="AccMiddleName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AccGender" class="control-label"></label>
-                <input asp-for="AccGender" class="form-control" />
+                <label> Пол </label>
+                <select asp-for="AccGender" class="form-control" asp-items="new SelectList(genders)"></select>
                 <span asp-validation-for="AccGender" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AccBirthday" class="control-label"></label>
+                Дата рождения
                 <input asp-for="AccBirthday" class="form-control" />
                 <span asp-validation-for="AccBirthday" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AccEmail" class="control-label"></label>
+                Электронная почта
                 <input asp-for="AccEmail" class="form-control" />
                 <span asp-validation-for="AccEmail" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="AccPhoneRegistration" class="control-label"></label>
+                Телефон
                 <input asp-for="AccPhoneRegistration" class="form-control" />
                 <span asp-validation-for="AccPhoneRegistration" class="text-danger"></span>
             </div>
@@ -55,14 +58,10 @@
                 <span asp-validation-for="AccHashPassword" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Зарегистрироваться" class="btn btn-primary" />
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
