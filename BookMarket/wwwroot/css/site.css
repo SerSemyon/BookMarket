@@ -13,8 +13,12 @@ html {
   min-height: 100%;
 }
 
+
 body {
-  margin-bottom: 60px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5%;
 }
 
 .BookBackground {
@@ -84,41 +88,58 @@ body {
 
 .form_search {
     position: relative;
-    width: 300px;
+    width: 100%;
     margin: 0 auto;
+    font-size: 16px;
 }
 
 .search {
-   
-}
-
-.search input {
-    box-sizing: border-box;
-    width: 100%;
-    height: 42px;
-    padding-left: 10px;
-    border: 2px solid #7BA7AB;
-    border-radius: 5px;
-    outline: none;
-    background: #F9F0DA;
-    color: #9E9C9C;
-}
-
-.search button {
-    position: absolute;
-    top: 0;
-    right: 0px;
-    width: 42px;
-    height: 42px;
-    border: none;
-    background: #7BA7AB;
-    border-radius: 0 5px 5px 0;
-    cursor: pointer;
-}
-
-.search button:before {
-    content: "\f002";
-    font-family: FontAwesome;
+    padding: 30px 0;
+    width: 40%;
     font-size: 16px;
-    color: #F9F0DA;
 }
+
+    .search input {
+        box-sizing: border-box;
+        width: 100%;
+        height: 2.5em;
+        padding-left: 1em;
+        border: 0.15em solid #7BA7AB;
+        border-radius: 3em;
+        outline: none;
+        background: #F9F0DA;
+        color: #9E9C9C;
+        font-size: 16px;
+    }
+
+    .search button {
+        position: absolute;
+        top: 0;
+        right: 0px;
+        width: 2.5em;
+        height: 2.5em;
+        border: none;
+        background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' class='bi bi-search' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'%3E%3C/path%3E%3C/svg%3E") no-repeat center;
+        cursor: pointer;
+        opacity: 0.7;
+        border-radius: 3em 3em;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    button[type=submit]:hover {
+        opacity: 2;
+    }
+
+    button[type=submit]:focus,
+    input[type=search]:focus {
+        box-shadow: 0 0 3px 0 #1183d6;
+        border-color: #1183d6;
+        outline: none;
+    }
+
+    .search button:before {
+        font-family: FontAwesome;
+        font-size: 16px;
+        color: #F9F0DA;
+    }
