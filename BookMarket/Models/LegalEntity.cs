@@ -7,6 +7,8 @@ public partial class LegalEntity
 {
     public int LegalEntityId { get; set; }
 
+    public string? LegalName { get; set; }
+
     public int? AccountId { get; set; }
 
     public DateOnly? DateRegistration { get; set; }
