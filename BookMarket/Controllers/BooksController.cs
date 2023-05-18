@@ -30,23 +30,60 @@ namespace BookMarket.Controllers
                 .Include(f => f.Account)
                 .ToList();
 
-            Response.Cookies.Append("FavouriteBook", book.BookName);
+            Response.Cookies.Append("LastBook", book.BookId.ToString());
             return View(book);
+        }
+
+        public async Task<IActionResult> AddFavouriteBook()
+        {
+            int favouriteId = 0;
+            if (Request.Cookies.ContainsKey("LastBook"))
+            {
+                favouriteId = Convert.ToInt32(Request.Cookies["LastBook"].ToString());
+            }
+            Response.Cookies.Append("FavouriteBook", favouriteId.ToString());
+            var book = await _context.Books
+                .Include(b => b.LegalEntity)
+                .Include(b => b.Phouse)
+                .FirstOrDefaultAsync(m => m.BookId == favouriteId);
+
+            ViewBag.feedbacks = _context.Feedbacks.Where(f => f.BookId == favouriteId)
+                .Include(f => f.Account)
+                .ToList();
+            return View("show", book);
         }
 
         public async Task<IActionResult> FavouriteBook()
         {
-            string bookName = "";
+            int bookId = 0;
             if (Request.Cookies.ContainsKey("FavouriteBook"))
             {
-                bookName = Request.Cookies["FavouriteBook"].ToString();
+                bookId = Convert.ToInt32(Request.Cookies["FavouriteBook"].ToString());
             }
             var book = await _context.Books
                 .Include(b => b.LegalEntity)
                 .Include(b => b.Phouse)
-                .FirstOrDefaultAsync(m => m.BookName == bookName);
+                .FirstOrDefaultAsync(m => m.BookId == bookId);
 
-            ViewBag.feedbacks = _context.Feedbacks.Include(b => b.Book).Where(f => f.Book.BookName == bookName)
+            ViewBag.feedbacks = _context.Feedbacks.Where(f => f.BookId == bookId)
+                .Include(f => f.Account)
+                .ToList();
+            return View("show", book);
+        }
+
+        public async Task<IActionResult> LastBook()
+        {
+            int bookId = 0;
+            if (Request.Cookies.ContainsKey("LastBook"))
+            {
+                bookId = Convert.ToInt32(Request.Cookies["LastBook"].ToString());
+            }
+            var book = await _context.Books
+                .Include(b => b.LegalEntity)
+                .Include(b => b.Phouse)
+                .FirstOrDefaultAsync(m => m.BookId == bookId);
+
+            ViewBag.feedbacks = _context.Feedbacks.Where(f => f.BookId == bookId)
                 .Include(f => f.Account)
                 .ToList();
             return View("show", book);
