@@ -15,17 +15,33 @@ namespace BookMarket.Controllers
             dbContext = new DbbookMarketContext();
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string? name)
         {
-            List<Book> books = dbContext.Books.ToList();
-            return View(books);
+            if (name == null)
+            {
+                List<Book> books = dbContext.Books.ToList();
+                return View("Index", books);
+            }
+            else
+            {
+                List<Book> books = dbContext.Books.Where(b => b.BookName.ToLower().Contains(name.ToLower())).ToList();
+                return View("Index", books);
+            }
         }
 
         [Route("\"{name}\"")]
-        public IActionResult Index(string name)
+        public IActionResult Search(string? name)
         {
-            List<Book> books = dbContext.Books.Where(b => b.BookName.ToLower().Contains(name.ToLower())).ToList();
-            return View(books);
+            if (name == null)
+            {
+                List<Book> books = dbContext.Books.ToList();
+                return View("Index", books);
+            }
+            else
+            {
+                List<Book> books = dbContext.Books.Where(b => b.BookName.ToLower().Contains(name.ToLower())).ToList();
+                return View("Index",books);
+            }
         }
 
         public IActionResult Privacy()
