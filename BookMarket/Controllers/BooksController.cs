@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BookMarket;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Net;
 
 namespace BookMarket.Controllers
 {
@@ -36,18 +37,18 @@ namespace BookMarket.Controllers
 
         public async Task<IActionResult> AddFavouriteBook()
         {
-            int favouriteId = 0;
-            if (Request.Cookies.ContainsKey("LastBook"))
+            int bookId = -1;
+            if (HttpContext.Session.Keys.Contains("LastBook"))
             {
-                favouriteId = Convert.ToInt32(Request.Cookies["LastBook"].ToString());
+                bookId = Convert.ToInt32(HttpContext.Session.GetString("LastBook").ToString());
             }
-            Response.Cookies.Append("FavouriteBook", favouriteId.ToString());
+            Response.Cookies.Append("FavouriteBook", bookId.ToString());
             var book = await _context.Books
                 .Include(b => b.LegalEntity)
                 .Include(b => b.Phouse)
-                .FirstOrDefaultAsync(m => m.BookId == favouriteId);
+                .FirstOrDefaultAsync(m => m.BookId == bookId);
 
-            ViewBag.feedbacks = _context.Feedbacks.Where(f => f.BookId == favouriteId)
+            ViewBag.feedbacks = _context.Feedbacks.Where(f => f.BookId == bookId)
                 .Include(f => f.Account)
                 .ToList();
             return View("show", book);
