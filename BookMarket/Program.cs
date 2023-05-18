@@ -13,6 +13,13 @@ namespace BookMarket
             builder.Services.AddControllersWithViews(); 
             builder.Services.AddAuthentication("Bearer").AddCookie();
 
+            builder.Services.AddDistributedMemoryCache(); 
+            builder.Services.AddSession(options =>
+            {
+                options.Cookie.Name = ".MyApp.Session";
+                options.IdleTimeout = TimeSpan.FromMinutes(60);
+                options.Cookie.IsEssential = true;
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -32,6 +39,8 @@ namespace BookMarket
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+
+            app.UseSession();
 
             app.Run();
         }

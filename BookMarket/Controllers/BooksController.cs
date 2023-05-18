@@ -30,7 +30,7 @@ namespace BookMarket.Controllers
                 .Include(f => f.Account)
                 .ToList();
 
-            Response.Cookies.Append("LastBook", book.BookId.ToString());
+            HttpContext.Session.SetString("LastBook", book.BookId.ToString());
             return View(book);
         }
 
@@ -55,11 +55,13 @@ namespace BookMarket.Controllers
 
         public async Task<IActionResult> FavouriteBook()
         {
-            int bookId = 0;
+            int bookId = -1;
             if (Request.Cookies.ContainsKey("FavouriteBook"))
             {
                 bookId = Convert.ToInt32(Request.Cookies["FavouriteBook"].ToString());
             }
+            if (bookId == -1)
+                return View();
             var book = await _context.Books
                 .Include(b => b.LegalEntity)
                 .Include(b => b.Phouse)
@@ -73,11 +75,13 @@ namespace BookMarket.Controllers
 
         public async Task<IActionResult> LastBook()
         {
-            int bookId = 0;
-            if (Request.Cookies.ContainsKey("LastBook"))
+            int bookId = -1;
+            if (HttpContext.Session.Keys.Contains("LastBook"))
             {
-                bookId = Convert.ToInt32(Request.Cookies["LastBook"].ToString());
+                bookId = Convert.ToInt32(HttpContext.Session.GetString("LastBook").ToString());
             }
+            if (bookId == -1)
+                return View();
             var book = await _context.Books
                 .Include(b => b.LegalEntity)
                 .Include(b => b.Phouse)
