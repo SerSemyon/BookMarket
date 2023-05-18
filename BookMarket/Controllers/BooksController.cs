@@ -29,7 +29,27 @@ namespace BookMarket.Controllers
             ViewBag.feedbacks = _context.Feedbacks.Where(f => f.BookId == id)
                 .Include(f => f.Account)
                 .ToList();
+
+            Response.Cookies.Append("FavouriteBook", book.BookName);
             return View(book);
+        }
+
+        public async Task<IActionResult> FavouriteBook()
+        {
+            string bookName = "";
+            if (Request.Cookies.ContainsKey("FavouriteBook"))
+            {
+                bookName = Request.Cookies["FavouriteBook"].ToString();
+            }
+            var book = await _context.Books
+                .Include(b => b.LegalEntity)
+                .Include(b => b.Phouse)
+                .FirstOrDefaultAsync(m => m.BookName == bookName);
+
+            ViewBag.feedbacks = _context.Feedbacks.Include(b => b.Book).Where(f => f.Book.BookName == bookName)
+                .Include(f => f.Account)
+                .ToList();
+            return View("show", book);
         }
 
         // GET: Books
