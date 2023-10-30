@@ -39,17 +39,8 @@ namespace BookMarket
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            builder.Services.AddControllersWithViews(); 
-            builder.Services.AddAuthentication("Bearer").AddCookie();
-
-            builder.Services.AddDistributedMemoryCache(); 
-            builder.Services.AddSession(options =>
-            {
-                options.Cookie.Name = ".MyApp.Session";
-                options.IdleTimeout = TimeSpan.FromMinutes(60);
-                options.Cookie.IsEssential = true;
-            });
-
+            builder.Services.AddControllersWithViews();
+            //builder.Services.AddAuthentication("Bearer").AddCookie();
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
@@ -57,6 +48,15 @@ namespace BookMarket
                     options.LoginPath = "/login";
                     options.AccessDeniedPath = "/login";
                 });
+
+            builder.Services.AddDistributedMemoryCache();
+            builder.Services.AddSession(options =>
+            {
+                options.Cookie.Name = ".MyApp.Session";
+                options.IdleTimeout = TimeSpan.FromMinutes(60);
+                options.Cookie.IsEssential = true;
+            });
+
             builder.Services.AddAuthorization();            // добавление сервисов авторизации
 
             var app = builder.Build();
@@ -76,33 +76,33 @@ namespace BookMarket
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.MapGet("/login", async (HttpContext context) =>
-            {
-                context.Response.ContentType = "text/html; charset=utf-8";
-                // html-форма для ввода логина/пароля
-                string loginForm = @"<!DOCTYPE html>
-                    <html>
-                    <head>
-                        <meta charset='utf-8' />
-                        <title>Авторизация</title>
-                    </head>
-                    <body>
-                        <h2>Login Form</h2>
-                        <form method='post'>
-                            <p>
-                                <label>Email</label><br />
-                                <input name='email' />
-                            </p>
-                            <p>
-                                <label>Password</label><br />
-                                <input type='password' name='password' />
-                            </p>
-                            <input type='submit' value='Login' />
-                        </form>
-                    </body>
-                    </html>";
-                    await context.Response.WriteAsync(loginForm);
-            });
+            //app.MapGet("/login", async (HttpContext context) =>
+            //{
+            //    context.Response.ContentType = "text/html; charset=utf-8";
+            //    // html-форма для ввода логина/пароля
+            //    string loginForm = @"<!DOCTYPE html>
+            //        <html>
+            //        <head>
+            //            <meta charset='utf-8' />
+            //            <title>Авторизация</title>
+            //        </head>
+            //        <body>
+            //            <h2>Login Form</h2>
+            //            <form method='post'>
+            //                <p>
+            //                    <label>Email</label><br />
+            //                    <input name='email' />
+            //                </p>
+            //                <p>
+            //                    <label>Password</label><br />
+            //                    <input type='password' name='password' />
+            //                </p>
+            //                <input type='submit' value='Login' />
+            //            </form>
+            //        </body>
+            //        </html>";
+            //        await context.Response.WriteAsync(loginForm);
+            //});
 
             app.MapPost("/login", async (string? returnUrl, HttpContext context) =>
             {
@@ -114,7 +114,7 @@ namespace BookMarket
                     return Results.BadRequest("Email и/или пароль не установлены");
                 string email = form["email"];
                 string password = form["password"];
-                string hashPassword = CurrentUser.HashPassword(password);
+                string hashPassword = HashPassword(password);
 
                 // находим пользователя 
                 Account? person = db.Accounts.FirstOrDefault(p => (p.AccEmail == email) && (p.AccHashPassword == hashPassword));

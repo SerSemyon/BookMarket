@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace BookMarket.Controllers
 {
-    [Authorize]
     public class AccountsController : Controller
     {
         private readonly DbbookMarketContext _context;
