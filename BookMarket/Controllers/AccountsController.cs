@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BookMarket;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BookMarket.Controllers
 {
+    [Authorize]
     public class AccountsController : Controller
     {
         private readonly DbbookMarketContext _context;
