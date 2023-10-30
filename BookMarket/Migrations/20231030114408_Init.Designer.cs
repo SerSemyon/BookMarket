@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BookMarket.Migrations
 {
     [DbContext(typeof(DbbookMarketContext))]
-    [Migration("20230505073048_initial")]
-    partial class initial
+    [Migration("20231030114408_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -318,6 +318,9 @@ namespace BookMarket.Migrations
                     b.Property<DateOnly?>("DateRegistration")
                         .HasColumnType("date")
                         .HasColumnName("date_registration");
+
+                    b.Property<string>("LegalName")
+                        .HasColumnType("text");
 
                     b.Property<string>("Psr")
                         .HasMaxLength(13)
