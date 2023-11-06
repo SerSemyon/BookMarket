@@ -15,7 +15,7 @@ using System.Security.Claims;
 
 namespace BookMarket.Controllers
 {
-    [Authorize(Roles = "2")]
+    [Authorize]
     public class BooksController : Controller
     {
         private readonly DbbookMarketContext _context;

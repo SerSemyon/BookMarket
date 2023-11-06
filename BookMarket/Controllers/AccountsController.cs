@@ -73,11 +73,6 @@ namespace BookMarket.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-/*            var list = new SelectList(_context.AccountTypes, "TypeName", "TypeName", account.Type.TypeName);
-            list.Select()
-            Console.WriteLine(list);*/
-
-            ViewData["TypeName"] = new SelectList(_context.AccountTypes, "TypeName", "TypeName", account.Type.TypeName);
             return View(account);
         }
 

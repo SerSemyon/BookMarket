@@ -8,6 +8,16 @@
 
 <p>
     <a asp-action="Create">Create New</a>
+    @if (User.IsInRole("1"))
+    {
+        <button onclick="handlerEdit()">Edit</button>
+        <button onclick="handlerDetails()">Details</button>
+        <button onclick="handlerDelete()">Delete</button>
+    }
+    else
+    {
+        <button onclick="handlerDetails()">Details</button>
+    }
 </p>
 <table class="table">
     <thead>
@@ -40,8 +50,9 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
+    @foreach (var item in Model) 
+    {
+        <tr onclick="selectRow(@item.BookId)" id="@item.BookId">
             <td>
                 @Html.DisplayFor(modelItem => item.BookName)
             </td>
@@ -66,12 +77,38 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Phouse.PhouseId)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.BookId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.BookId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.BookId">Delete</a>
-            </td>
         </tr>
-}
+    }
     </tbody>
 </table>
+
+@section Scripts {
+    <script>
+        var selectedId;
+        function selectRow(idObject) {
+            if (selectedId) {
+                document.getElementById(selectedId).className = "";
+            }
+            selectedId = idObject;
+            document.getElementById(idObject).className = "active-row";
+        }
+
+        function handlerDetails() {
+            if (selectedId) {
+                window.location.href = "/Books/Details/" + selectedId;
+            }
+        }
+
+        function handlerDelete() {
+            if (selectedId) {
+                window.location.href = "/Books/Delete/" + selectedId;
+            }
+        }
+
+        function handlerEdit() {
+            if (selectedId) {
+                window.location.href = "/Books/Edit/" + selectedId;
+            }
+        }
+    </script>
+}

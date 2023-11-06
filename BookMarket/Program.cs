@@ -40,7 +40,7 @@ namespace BookMarket
                 .AddCookie(options =>
                 {
                     options.LoginPath = "/login";
-                    options.AccessDeniedPath = "/login";
+                    options.AccessDeniedPath = "/accessdenied";
                 });
 
             builder.Services.AddDistributedMemoryCache();
@@ -69,6 +69,12 @@ namespace BookMarket
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.MapGet("/accessdenied", async (HttpContext context) =>
+            {
+                context.Response.StatusCode = 403;
+                await context.Response.WriteAsync("Access Denied");
+            });
 
             app.MapGet("/login", async (HttpContext context) =>
             {
@@ -116,7 +122,8 @@ namespace BookMarket
                 if (person is null) return Results.Redirect("/login");
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, person.TypeId.ToString()),
+                    new Claim(ClaimTypes.Name, person.AccEmail),
+                    new Claim(ClaimsIdentity.DefaultRoleClaimType, person.TypeId.ToString()),
                 };
                 var claimsIdentity = new ClaimsIdentity(claims, "Cookies");
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
