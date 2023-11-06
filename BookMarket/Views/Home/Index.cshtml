@@ -11,7 +11,7 @@
                 <td>
                     <a asp-controller="books" asp-action="Show" asp-route-id="@Model[i].BookId">
                         <div class="BookBackground">
-                            <img class="BookImage" src="D:\intro_logo.svg" alt="Изображение не найдено">
+                            <img class="BookImage" src=@Model[i].BookImagePath alt="Изображение не найдено">
                             <p class="Price"> @Model[i].BookPrice </p>
                             <p class="BookName"> @Model[i].BookName </p>
                         </div>
@@ -22,7 +22,7 @@
                     <td>
                         <a asp-controller="books" asp-action="Show" asp-route-id="@Model[i+1].BookId">
                             <div class="BookBackground">
-                                <img class="BookImage" src="D:\intro_logo.svg" alt="Изображение не найдено">
+                                <img class="BookImage" src=@Model[i].BookImagePath alt="Изображение не найдено">
                                 <p class="Price"> @Model[i+1].BookPrice </p>
                                 <p class="BookName"> @Model[i+1].BookName </p>
                             </div>
