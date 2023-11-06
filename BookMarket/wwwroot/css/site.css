@@ -91,11 +91,11 @@ tr:hover {
 }
 
 .active-row {
-    background-color: aqua;
+    background-color: #a1a1a1;
 }
 
 .active-row:hover {
-    background-color: aquamarine;
+    background-color: #808080;
 }
 
 .form_search {

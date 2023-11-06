@@ -7,12 +7,12 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
     @if (User.IsInRole("1"))
     {
         <button onclick="handlerEdit()">Edit</button>
         <button onclick="handlerDetails()">Details</button>
         <button onclick="handlerDelete()">Delete</button>
+        <button onclick="handlerCreate()">Create</button>
     }
     else
     {
@@ -109,6 +109,10 @@
             if (selectedId) {
                 window.location.href = "/Books/Edit/" + selectedId;
             }
+        }
+
+        function handlerCreate() {
+            window.location.href = "/Books/Create";
         }
     </script>
 }
