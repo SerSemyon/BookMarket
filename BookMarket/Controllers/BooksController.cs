@@ -8,11 +8,14 @@ using Microsoft.EntityFrameworkCore;
 using BookMarket;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Net;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+
 
 namespace BookMarket.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "2")]
     public class BooksController : Controller
     {
         private readonly DbbookMarketContext _context;

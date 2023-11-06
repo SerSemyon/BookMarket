@@ -8,12 +8,6 @@ namespace BookMarket
 {
     public class Program
     {
-        //public static Account? User;
-        //public static int userId = -1;
-        //public static string? HashPassword;
-
-
-
         static string ByteArrayToString(byte[] arrInput)
         {
             int i;
@@ -76,33 +70,33 @@ namespace BookMarket
             app.UseAuthentication();
             app.UseAuthorization();
 
-            //app.MapGet("/login", async (HttpContext context) =>
-            //{
-            //    context.Response.ContentType = "text/html; charset=utf-8";
-            //    // html-форма для ввода логина/пароля
-            //    string loginForm = @"<!DOCTYPE html>
-            //        <html>
-            //        <head>
-            //            <meta charset='utf-8' />
-            //            <title>Авторизация</title>
-            //        </head>
-            //        <body>
-            //            <h2>Login Form</h2>
-            //            <form method='post'>
-            //                <p>
-            //                    <label>Email</label><br />
-            //                    <input name='email' />
-            //                </p>
-            //                <p>
-            //                    <label>Password</label><br />
-            //                    <input type='password' name='password' />
-            //                </p>
-            //                <input type='submit' value='Login' />
-            //            </form>
-            //        </body>
-            //        </html>";
-            //        await context.Response.WriteAsync(loginForm);
-            //});
+            app.MapGet("/login", async (HttpContext context) =>
+            {
+                context.Response.ContentType = "text/html; charset=utf-8";
+                // html-форма для ввода логина/пароля
+                string loginForm = @"<!DOCTYPE html>
+                    <html>
+                    <head>
+                        <meta charset='utf-8' />
+                        <title>Авторизация</title>
+                    </head>
+                    <body>
+                        <h2>Login Form</h2>
+                        <form method='post'>
+                            <p>
+                                <label>Email</label><br />
+                                <input name='email' />
+                            </p>
+                            <p>
+                                <label>Password</label><br />
+                                <input type='password' name='password' />
+                            </p>
+                            <input type='submit' value='Login' />
+                        </form>
+                    </body>
+                    </html>";
+                    await context.Response.WriteAsync(loginForm);
+            });
 
             app.MapPost("/login", async (string? returnUrl, HttpContext context) =>
             {
@@ -122,7 +116,7 @@ namespace BookMarket
                 if (person is null) return Results.Redirect("/login");
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, person.AccEmail),
+                    new Claim(ClaimTypes.Name, person.TypeId.ToString()),
                 };
                 var claimsIdentity = new ClaimsIdentity(claims, "Cookies");
                 var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
