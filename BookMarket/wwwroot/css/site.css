@@ -9,8 +9,8 @@ html {
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 
@@ -19,6 +19,14 @@ body {
     justify-content: center;
     align-items: center;
     margin-bottom: 5%;
+    background-image: url('../images/books.jpg');
+    background-size: cover;
+    background-position: center;
+    background-color: rgba(1,1,1,0.9);
+}
+
+.pageback {
+    background-color: rgba(250,250,250,0.4);
 }
 
 .BookBackground {
