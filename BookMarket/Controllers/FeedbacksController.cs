@@ -38,7 +38,7 @@ namespace BookMarket.Controllers
             var feedback = await _context.Feedbacks
                 .Include(f => f.Account)
                 .Include(f => f.Book)
-                .FirstOrDefaultAsync(m => m.FeedbackId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (feedback == null)
             {
                 return NotFound();
@@ -98,7 +98,7 @@ namespace BookMarket.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("FeedbackId,BookId,AccountId,FbIsAnonim,FbDescription,FbRating")] Feedback feedback)
         {
-            if (id != feedback.FeedbackId)
+            if (id != feedback.Id)
             {
                 return NotFound();
             }
@@ -112,7 +112,7 @@ namespace BookMarket.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!FeedbackExists(feedback.FeedbackId))
+                    if (!FeedbackExists(feedback.Id))
                     {
                         return NotFound();
                     }
@@ -139,7 +139,7 @@ namespace BookMarket.Controllers
             var feedback = await _context.Feedbacks
                 .Include(f => f.Account)
                 .Include(f => f.Book)
-                .FirstOrDefaultAsync(m => m.FeedbackId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (feedback == null)
             {
                 return NotFound();
@@ -169,7 +169,7 @@ namespace BookMarket.Controllers
 
         private bool FeedbackExists(int id)
         {
-          return (_context.Feedbacks?.Any(e => e.FeedbackId == id)).GetValueOrDefault();
+          return (_context.Feedbacks?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

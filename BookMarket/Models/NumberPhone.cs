@@ -5,7 +5,7 @@ namespace BookMarket;
 
 public partial class NumberPhone
 {
-    public int NphoneId { get; set; }
+    public int Id { get; set; }
 
     public string? NpPhone { get; set; }
 

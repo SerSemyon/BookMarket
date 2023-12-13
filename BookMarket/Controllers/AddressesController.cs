@@ -37,7 +37,7 @@ namespace BookMarket.Controllers
             }
 
             var address = await _context.Addresses
-                .FirstOrDefaultAsync(m => m.AddressId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (address == null)
             {
                 return NotFound();
@@ -91,7 +91,7 @@ namespace BookMarket.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("AddressId,AdrCity,AdrStreet,AdrHouse,AdrEntrance,AdrFloor,AdrApartment,AdrIsDefault")] Address address)
         {
-            if (id != address.AddressId)
+            if (id != address.Id)
             {
                 return NotFound();
             }
@@ -105,7 +105,7 @@ namespace BookMarket.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AddressExists(address.AddressId))
+                    if (!AddressExists(address.Id))
                     {
                         return NotFound();
                     }
@@ -128,7 +128,7 @@ namespace BookMarket.Controllers
             }
 
             var address = await _context.Addresses
-                .FirstOrDefaultAsync(m => m.AddressId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (address == null)
             {
                 return NotFound();
@@ -158,7 +158,7 @@ namespace BookMarket.Controllers
 
         private bool AddressExists(int id)
         {
-          return (_context.Addresses?.Any(e => e.AddressId == id)).GetValueOrDefault();
+          return (_context.Addresses?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

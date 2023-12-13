@@ -30,13 +30,13 @@ namespace BookMarket.Controllers
             var book = await _context.Books
                 .Include(b => b.LegalEntity)
                 .Include(b => b.Phouse)
-                .FirstOrDefaultAsync(m => m.BookId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             ViewBag.feedbacks = _context.Feedbacks.Where(f => f.BookId == id)
                 .Include(f => f.Account)
                 .ToList();
 
-            HttpContext.Session.SetString("LastBook", book.BookId.ToString());
+            HttpContext.Session.SetString("LastBook", book.Id.ToString());
             return View(book);
         }
 
@@ -51,7 +51,7 @@ namespace BookMarket.Controllers
             var book = await _context.Books
                 .Include(b => b.LegalEntity)
                 .Include(b => b.Phouse)
-                .FirstOrDefaultAsync(m => m.BookId == bookId);
+                .FirstOrDefaultAsync(m => m.Id == bookId);
 
             ViewBag.feedbacks = _context.Feedbacks.Where(f => f.BookId == bookId)
                 .Include(f => f.Account)
@@ -71,7 +71,7 @@ namespace BookMarket.Controllers
             var book = await _context.Books
                 .Include(b => b.LegalEntity)
                 .Include(b => b.Phouse)
-                .FirstOrDefaultAsync(m => m.BookId == bookId);
+                .FirstOrDefaultAsync(m => m.Id == bookId);
 
             ViewBag.feedbacks = _context.Feedbacks.Where(f => f.BookId == bookId)
                 .Include(f => f.Account)
@@ -91,7 +91,7 @@ namespace BookMarket.Controllers
             var book = await _context.Books
                 .Include(b => b.LegalEntity)
                 .Include(b => b.Phouse)
-                .FirstOrDefaultAsync(m => m.BookId == bookId);
+                .FirstOrDefaultAsync(m => m.Id == bookId);
 
             ViewBag.feedbacks = _context.Feedbacks.Where(f => f.BookId == bookId)
                 .Include(f => f.Account)
@@ -117,7 +117,7 @@ namespace BookMarket.Controllers
             var book = await _context.Books
                 .Include(b => b.LegalEntity)
                 .Include(b => b.Phouse)
-                .FirstOrDefaultAsync(m => m.BookId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (book == null)
             {
                 return NotFound();
@@ -177,7 +177,7 @@ namespace BookMarket.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("BookId,LegalEntityId,BookName,PhouseId,BookAmount,BookPrice,BookRating,BookDescription,BookImagePath")] Book book)
         {
-            if (id != book.BookId)
+            if (id != book.Id)
             {
                 return NotFound();
             }
@@ -191,7 +191,7 @@ namespace BookMarket.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BookExists(book.BookId))
+                    if (!BookExists(book.Id))
                     {
                         return NotFound();
                     }
@@ -218,7 +218,7 @@ namespace BookMarket.Controllers
             var book = await _context.Books
                 .Include(b => b.LegalEntity)
                 .Include(b => b.Phouse)
-                .FirstOrDefaultAsync(m => m.BookId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (book == null)
             {
                 return NotFound();
@@ -248,7 +248,7 @@ namespace BookMarket.Controllers
 
         private bool BookExists(int id)
         {
-          return (_context.Books?.Any(e => e.BookId == id)).GetValueOrDefault();
+          return (_context.Books?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

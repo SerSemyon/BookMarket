@@ -5,7 +5,7 @@ namespace BookMarket;
 
 public partial class LegalEntity
 {
-    public int LegalEntityId { get; set; }
+    public int Id { get; set; }
 
     public string? LegalName { get; set; }
 

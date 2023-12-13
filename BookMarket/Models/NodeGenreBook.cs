@@ -5,7 +5,7 @@ namespace BookMarket;
 
 public partial class NodeGenreBook
 {
-    public int NodeGenreBookId { get; set; }
+    public int Id { get; set; }
 
     public int? GenreId { get; set; }
 

@@ -51,18 +51,18 @@
             @Html.DisplayNameFor(model => model.LegalEntity)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LegalEntity.LegalEntityId)
+            @Html.DisplayFor(model => model.LegalEntity.Id)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Phouse)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Phouse.PhouseId)
+            @Html.DisplayFor(model => model.Phouse.Id)
         </dd>
     </dl>
     
     <form asp-action="Delete">
-        <input type="hidden" asp-for="BookId" />
+        <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
     </form>

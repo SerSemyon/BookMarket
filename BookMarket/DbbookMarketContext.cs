@@ -61,13 +61,13 @@ public partial class DbbookMarketContext : DbContext
 
         modelBuilder.Entity<Account>(entity =>
         {
-            entity.HasKey(e => e.AccountId).HasName("account_pkey");
+            entity.HasKey(e => e.Id).HasName("account_pkey");
 
             entity.ToTable("account");
 
             entity.HasIndex(e => e.AccPhoneRegistration, "account_acc_phone_registration_key").IsUnique();
 
-            entity.Property(e => e.AccountId).HasColumnName("account_id");
+            entity.Property(e => e.Id).HasColumnName("account_id");
             entity.Property(e => e.AccBirthday).HasColumnName("acc_birthday");
             entity.Property(e => e.AccEmail)
                 .HasMaxLength(100)
@@ -100,11 +100,11 @@ public partial class DbbookMarketContext : DbContext
 
         modelBuilder.Entity<AccountType>(entity =>
         {
-            entity.HasKey(e => e.TypeId).HasName("account_type_pkey");
+            entity.HasKey(e => e.Id).HasName("account_type_pkey");
 
             entity.ToTable("account_type");
 
-            entity.Property(e => e.TypeId).HasColumnName("type_id");
+            entity.Property(e => e.Id).HasColumnName("type_id");
             entity.Property(e => e.TypeName)
                 .HasMaxLength(30)
                 .HasColumnName("type_name");
@@ -112,11 +112,11 @@ public partial class DbbookMarketContext : DbContext
 
         modelBuilder.Entity<Address>(entity =>
         {
-            entity.HasKey(e => e.AddressId).HasName("address_pkey");
+            entity.HasKey(e => e.Id).HasName("address_pkey");
 
             entity.ToTable("address");
 
-            entity.Property(e => e.AddressId).HasColumnName("address_id");
+            entity.Property(e => e.Id).HasColumnName("address_id");
             entity.Property(e => e.AdrApartment).HasColumnName("adr_apartment");
             entity.Property(e => e.AdrCity)
                 .HasMaxLength(100)
@@ -136,11 +136,11 @@ public partial class DbbookMarketContext : DbContext
 
         modelBuilder.Entity<Author>(entity =>
         {
-            entity.HasKey(e => e.AuthorId).HasName("author_pkey");
+            entity.HasKey(e => e.Id).HasName("author_pkey");
 
             entity.ToTable("author");
 
-            entity.Property(e => e.AuthorId).HasColumnName("author_id");
+            entity.Property(e => e.Id).HasColumnName("author_id");
             entity.Property(e => e.AuthorDescription).HasColumnName("author_description");
             entity.Property(e => e.AuthorName)
                 .HasMaxLength(100)
@@ -149,11 +149,11 @@ public partial class DbbookMarketContext : DbContext
 
         modelBuilder.Entity<Book>(entity =>
         {
-            entity.HasKey(e => e.BookId).HasName("book_pkey");
+            entity.HasKey(e => e.Id).HasName("book_pkey");
 
             entity.ToTable("book");
 
-            entity.Property(e => e.BookId).HasColumnName("book_id");
+            entity.Property(e => e.Id).HasColumnName("book_id");
             entity.Property(e => e.BookAmount).HasColumnName("book_amount");
             entity.Property(e => e.BookDescription)
                 .HasMaxLength(3000)
@@ -182,11 +182,11 @@ public partial class DbbookMarketContext : DbContext
 
         modelBuilder.Entity<Feedback>(entity =>
         {
-            entity.HasKey(e => e.FeedbackId).HasName("feedback_pkey");
+            entity.HasKey(e => e.Id).HasName("feedback_pkey");
 
             entity.ToTable("feedback");
 
-            entity.Property(e => e.FeedbackId)
+            entity.Property(e => e.Id)
                 .HasDefaultValueSql("nextval('feedback_person_id_seq'::regclass)")
                 .HasColumnName("feedback_id");
             entity.Property(e => e.AccountId).HasColumnName("account_id");
@@ -214,11 +214,11 @@ public partial class DbbookMarketContext : DbContext
 
         modelBuilder.Entity<Genre>(entity =>
         {
-            entity.HasKey(e => e.GenreId).HasName("genre_pkey");
+            entity.HasKey(e => e.Id).HasName("genre_pkey");
 
             entity.ToTable("genre");
 
-            entity.Property(e => e.GenreId).HasColumnName("genre_id");
+            entity.Property(e => e.Id).HasColumnName("genre_id");
             entity.Property(e => e.GenreName)
                 .HasMaxLength(100)
                 .HasColumnName("genre_name");
@@ -226,11 +226,11 @@ public partial class DbbookMarketContext : DbContext
 
         modelBuilder.Entity<LegalEntity>(entity =>
         {
-            entity.HasKey(e => e.LegalEntityId).HasName("legal_entity_pkey");
+            entity.HasKey(e => e.Id).HasName("legal_entity_pkey");
 
             entity.ToTable("legal_entity");
 
-            entity.Property(e => e.LegalEntityId).HasColumnName("legal_entity_id");
+            entity.Property(e => e.Id).HasColumnName("legal_entity_id");
             entity.Property(e => e.AccountId).HasColumnName("account_id");
             entity.Property(e => e.DateRegistration).HasColumnName("date_registration");
             entity.Property(e => e.Psr)
@@ -247,11 +247,11 @@ public partial class DbbookMarketContext : DbContext
 
         modelBuilder.Entity<NodeAddressAccount>(entity =>
         {
-            entity.HasKey(e => e.NodeAddressAccountId).HasName("node_address_account_pkey");
+            entity.HasKey(e => e.Id).HasName("node_address_account_pkey");
 
             entity.ToTable("node_address_account");
 
-            entity.Property(e => e.NodeAddressAccountId).HasColumnName("node_address_account_id");
+            entity.Property(e => e.Id).HasColumnName("node_address_account_id");
             entity.Property(e => e.AccountId).HasColumnName("account_id");
             entity.Property(e => e.AddressId).HasColumnName("address_id");
 
@@ -266,11 +266,11 @@ public partial class DbbookMarketContext : DbContext
 
         modelBuilder.Entity<NodeAuthorBook>(entity =>
         {
-            entity.HasKey(e => e.NodeAuthorBookId).HasName("node_author_book_pkey");
+            entity.HasKey(e => e.Id).HasName("node_author_book_pkey");
 
             entity.ToTable("node_author_book");
 
-            entity.Property(e => e.NodeAuthorBookId).HasColumnName("node_author_book_id");
+            entity.Property(e => e.Id).HasColumnName("node_author_book_id");
             entity.Property(e => e.AuthorId).HasColumnName("author_id");
             entity.Property(e => e.BookId).HasColumnName("book_id");
 
@@ -285,11 +285,11 @@ public partial class DbbookMarketContext : DbContext
 
         modelBuilder.Entity<NodeGenreBook>(entity =>
         {
-            entity.HasKey(e => e.NodeGenreBookId).HasName("node_genre_book_pkey");
+            entity.HasKey(e => e.Id).HasName("node_genre_book_pkey");
 
             entity.ToTable("node_genre_book");
 
-            entity.Property(e => e.NodeGenreBookId).HasColumnName("node_genre_book_id");
+            entity.Property(e => e.Id).HasColumnName("node_genre_book_id");
             entity.Property(e => e.BookId).HasColumnName("book_id");
             entity.Property(e => e.GenreId).HasColumnName("genre_id");
 
@@ -304,11 +304,11 @@ public partial class DbbookMarketContext : DbContext
 
         modelBuilder.Entity<NodeNphoneAccount>(entity =>
         {
-            entity.HasKey(e => e.NodeNphoneAccountId).HasName("node_nphone_account_pkey");
+            entity.HasKey(e => e.Id).HasName("node_nphone_account_pkey");
 
             entity.ToTable("node_nphone_account");
 
-            entity.Property(e => e.NodeNphoneAccountId).HasColumnName("node_nphone_account_id");
+            entity.Property(e => e.Id).HasColumnName("node_nphone_account_id");
             entity.Property(e => e.AccountId).HasColumnName("account_id");
             entity.Property(e => e.NphoneId).HasColumnName("nphone_id");
 
@@ -323,11 +323,11 @@ public partial class DbbookMarketContext : DbContext
 
         modelBuilder.Entity<NodeOrderAccount>(entity =>
         {
-            entity.HasKey(e => e.NodeOrderAccountId).HasName("node_order_account_pkey");
+            entity.HasKey(e => e.Id).HasName("node_order_account_pkey");
 
             entity.ToTable("node_order_account");
 
-            entity.Property(e => e.NodeOrderAccountId).HasColumnName("node_order_account_id");
+            entity.Property(e => e.Id).HasColumnName("node_order_account_id");
             entity.Property(e => e.AccountId).HasColumnName("account_id");
             entity.Property(e => e.OrderId).HasColumnName("order_id");
 
@@ -338,11 +338,11 @@ public partial class DbbookMarketContext : DbContext
 
         modelBuilder.Entity<NodeOrderBook>(entity =>
         {
-            entity.HasKey(e => e.NodeOrderBookId).HasName("node_order_book_pkey");
+            entity.HasKey(e => e.Id).HasName("node_order_book_pkey");
 
             entity.ToTable("node_order_book");
 
-            entity.Property(e => e.NodeOrderBookId).HasColumnName("node_order_book_id");
+            entity.Property(e => e.Id).HasColumnName("node_order_book_id");
             entity.Property(e => e.Amount).HasColumnName("amount");
             entity.Property(e => e.BookId).HasColumnName("book_id");
             entity.Property(e => e.OrderId).HasColumnName("order_id");
@@ -354,11 +354,11 @@ public partial class DbbookMarketContext : DbContext
 
         modelBuilder.Entity<NumberPhone>(entity =>
         {
-            entity.HasKey(e => e.NphoneId).HasName("number_phone_pkey");
+            entity.HasKey(e => e.Id).HasName("number_phone_pkey");
 
             entity.ToTable("number_phone");
 
-            entity.Property(e => e.NphoneId)
+            entity.Property(e => e.Id)
                 .HasDefaultValueSql("nextval('number_phone_np_phone_id_seq'::regclass)")
                 .HasColumnName("nphone_id");
             entity.Property(e => e.NpIsDefault)
@@ -371,11 +371,11 @@ public partial class DbbookMarketContext : DbContext
 
         modelBuilder.Entity<Order>(entity =>
         {
-            entity.HasKey(e => e.OrderId).HasName("orders_pkey");
+            entity.HasKey(e => e.Id).HasName("orders_pkey");
 
             entity.ToTable("orders");
 
-            entity.Property(e => e.OrderId).HasColumnName("order_id");
+            entity.Property(e => e.Id).HasColumnName("order_id");
             entity.Property(e => e.OrderAddressId).HasColumnName("order_address_id");
             entity.Property(e => e.OrderCreatedAt)
                 .HasDefaultValueSql("now()")
@@ -396,11 +396,11 @@ public partial class DbbookMarketContext : DbContext
 
         modelBuilder.Entity<OrderState>(entity =>
         {
-            entity.HasKey(e => e.OstateId).HasName("order_state_pkey");
+            entity.HasKey(e => e.Id).HasName("order_state_pkey");
 
             entity.ToTable("order_state");
 
-            entity.Property(e => e.OstateId).HasColumnName("ostate_id");
+            entity.Property(e => e.Id).HasColumnName("ostate_id");
             entity.Property(e => e.OstateDescription)
                 .HasMaxLength(255)
                 .HasColumnName("ostate_description");
@@ -411,11 +411,11 @@ public partial class DbbookMarketContext : DbContext
 
         modelBuilder.Entity<PublishingHouse>(entity =>
         {
-            entity.HasKey(e => e.PhouseId).HasName("publishing_house_pkey");
+            entity.HasKey(e => e.Id).HasName("publishing_house_pkey");
 
             entity.ToTable("publishing_house");
 
-            entity.Property(e => e.PhouseId).HasColumnName("phouse_id");
+            entity.Property(e => e.Id).HasColumnName("phouse_id");
             entity.Property(e => e.PhDescription).HasColumnName("ph_description");
             entity.Property(e => e.PhName)
                 .HasMaxLength(100)

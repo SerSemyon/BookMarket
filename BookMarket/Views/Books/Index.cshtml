@@ -52,7 +52,7 @@
     <tbody>
     @foreach (var item in Model) 
     {
-        <tr onclick="selectRow(@item.BookId)" id="@item.BookId">
+        <tr onclick="selectRow(@item.Id)" id="@item.Id">
             <td>
                 @Html.DisplayFor(modelItem => item.BookName)
             </td>
@@ -72,10 +72,10 @@
                 @Html.DisplayFor(modelItem => item.BookImagePath)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LegalEntity.LegalEntityId)
+                @Html.DisplayFor(modelItem => item.LegalEntity.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Phouse.PhouseId)
+                @Html.DisplayFor(modelItem => item.Phouse.Id)
             </td>
         </tr>
     }

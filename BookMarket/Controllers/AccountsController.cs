@@ -37,7 +37,7 @@ namespace BookMarket.Controllers
 
             var account = await _context.Accounts
                 .Include(a => a.Type)
-                .FirstOrDefaultAsync(m => m.AccountId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (account == null)
             {
                 return NotFound();
@@ -108,7 +108,7 @@ namespace BookMarket.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("AccountId,TypeName,AccName,AccLastName,AccMiddleName,AccGender,AccBirthday,AccEmail,AccPhoneRegistration,AccHashPassword")] Account account)
         {
-            if (id != account.AccountId)
+            if (id != account.Id)
             {
                 return NotFound();
             }
@@ -122,7 +122,7 @@ namespace BookMarket.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AccountExists(account.AccountId))
+                    if (!AccountExists(account.Id))
                     {
                         return NotFound();
                     }
@@ -147,7 +147,7 @@ namespace BookMarket.Controllers
 
             var account = await _context.Accounts
                 .Include(a => a.Type)
-                .FirstOrDefaultAsync(m => m.AccountId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (account == null)
             {
                 return NotFound();
@@ -177,7 +177,7 @@ namespace BookMarket.Controllers
 
         private bool AccountExists(int id)
         {
-          return (_context.Accounts?.Any(e => e.AccountId == id)).GetValueOrDefault();
+          return (_context.Accounts?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

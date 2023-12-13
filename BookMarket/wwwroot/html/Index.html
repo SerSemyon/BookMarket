@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>METANIT.COM</title>
+    <style>
+        td {
+            padding: 5px;
+        }
+
+        button {
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Список пользователей</h2>
+    <div>
+        <input type="hidden" id="id" />
+        <!-- Тут по аналогии тэг <p> для каждого поля -->
+        <p>
+            Имя:<br />
+            <input id="accName" />
+        </p>
+        <p>
+            Фамилия:<br />
+            <input id="accLastName"/>
+        </p>
+        <p>
+            <button id="saveBtn">Сохранить</button>
+            <button id="resetBtn">Сбросить</button>
+        </p>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <!-- Тут по аналогии тэг <th> для каждого поля (!один пустой тэг в конце оставить) -->
+                <th>Имя</th>
+                <th>Фамилия</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        // Тут свой базовый адрес контроллера в виде "api/название_контроллера/"
+        var addressApi = "/api/Accounts/";
+
+        async function getAll() {
+            const response = await fetch(addressApi, {
+                method: "GET",
+                headers: { "Accept": "application/json" }
+            });
+            if (response.ok === true) {
+                const elements = await response.json();
+                const rows = document.querySelector("tbody");
+                elements.forEach(element => rows.append(row(element)));
+            }
+        }
+
+        async function createOne(newItem) {
+
+            const response = await fetch(`${addressApi}`, {
+                method: "POST",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify(newItem)
+            });
+            if (response.ok === true) {
+                const itemRow = await response.json();
+                document.querySelector("tbody").append(row(itemRow));
+            }
+            else {
+                const error = await response.json();
+                console.log(error.message);
+            }
+        }
+
+        async function editOne(id, newData) {
+            let newItem = {
+                id
+            }
+            Object.assign(newItem, newData);
+            const response = await fetch(`${addressApi}${id}`, {
+                method: "PUT",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify(newItem)
+            });
+            if (response.ok === true) {
+                document.querySelector(`tr[data-rowid='${id}']`).replaceWith(row(newItem));
+            }
+            else {
+                const error = await response.json();
+                console.log(error.message);
+            }
+        }
+
+        async function deleteOne(id) {
+            const response = await fetch(`${addressApi}${id}`, {
+                method: "DELETE",
+                headers: { "Accept": "application/json" }
+            });
+            if (response.ok === true) {
+                document.querySelector(`tr[data-rowid='${id}']`).remove();
+                let curId = document.getElementById("id").value
+                if (curId == id) {
+                    resetForm();
+                }
+            }
+            else {
+                const error = await response.json();
+                console.log(error.message);
+            }
+        }
+
+        function row(itemRow) {
+            const tr = document.createElement("tr");
+            tr.setAttribute("data-rowid", itemRow.id);
+
+            // Тут свои по аналогии (по 3 строчки на поле)
+            const nameTd = document.createElement("td");
+            nameTd.append(itemRow.accName);
+            tr.append(nameTd);
+
+            const ageTd = document.createElement("td");
+            ageTd.append(itemRow.accLastName);
+            tr.append(ageTd);
+
+            const linksTd = document.createElement("td");
+
+            const editLink = document.createElement("button");
+            editLink.append("Изменить");
+            editLink.addEventListener("click", async () => await getOne(itemRow.id));
+            linksTd.append(editLink);
+
+            const removeLink = document.createElement("button");
+            removeLink.append("Удалить");
+            removeLink.addEventListener("click", async () => await deleteOne(itemRow.id));
+
+            linksTd.append(removeLink);
+            tr.appendChild(linksTd);
+
+            return tr;
+        }
+
+        async function getOne(id) {
+            const response = await fetch(`${addressApi}${id}`, {
+                method: "GET",
+                headers: { "Accept": "application/json" }
+            });
+            if (response.ok === true) {
+                const itemRow = await response.json();
+                // Тут свои поля по аналогии
+                document.getElementById("id").value = itemRow.id;
+                document.getElementById("accName").value = itemRow.accName;
+                document.getElementById("accLastName").value = itemRow.accLastName;
+            }
+            else {
+                const error = await response.json();
+                console.log(error.message);
+            }
+        }
+
+        function resetForm() {
+            // Тут сброс всех остальных элементов поаналогии
+            document.getElementById("id").value =
+            document.getElementById("accName").value =
+            document.getElementById("accLastName").value = "";
+        }
+
+        document.getElementById("resetBtn").addEventListener("click", () => resetForm());
+        document.getElementById("saveBtn").addEventListener("click", async () => {
+            const id = document.getElementById("id").value;
+            const currentItem = {
+            // Тут свои значения по аналогии
+                accName: document.getElementById("accName").value,
+                accLastName: document.getElementById("accLastName").value 
+            }
+            if (id === "")
+                await createOne(currentItem);
+            else
+                await editOne(id, currentItem);
+            resetForm();
+        });
+
+        getAll();
+    </script>
+</body>
+</html>

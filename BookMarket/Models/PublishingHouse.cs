@@ -5,7 +5,7 @@ namespace BookMarket;
 
 public partial class PublishingHouse
 {
-    public int PhouseId { get; set; }
+    public int Id { get; set; }
 
     public string PhName { get; set; } = null!;
 

@@ -5,7 +5,7 @@ namespace BookMarket;
 
 public partial class OrderState
 {
-    public int OstateId { get; set; }
+    public int Id { get; set; }
 
     public string OstateName { get; set; } = null!;
 

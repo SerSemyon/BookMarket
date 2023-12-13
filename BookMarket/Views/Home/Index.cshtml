@@ -9,7 +9,7 @@
         {
             <tr>
                 <td>
-                    <a asp-controller="books" asp-action="Show" asp-route-id="@Model[i].BookId">
+                    <a asp-controller="books" asp-action="Show" asp-route-id="@Model[i].Id">
                         <div class="BookBackground">
                             <img class="BookImage" src=@Model[i].BookImagePath alt="Изображение не найдено">
                             <p class="Price"> @Model[i].BookPrice </p>
@@ -20,7 +20,7 @@
                 @if (i + 1 != Model.Count)
                 {
                     <td>
-                        <a asp-controller="books" asp-action="Show" asp-route-id="@Model[i+1].BookId">
+                        <a asp-controller="books" asp-action="Show" asp-route-id="@Model[i+1].Id">
                             <div class="BookBackground">
                                 <img class="BookImage" src=@Model[i].BookImagePath alt="Изображение не найдено">
                                 <p class="Price"> @Model[i+1].BookPrice </p>

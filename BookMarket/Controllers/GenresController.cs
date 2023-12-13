@@ -37,7 +37,7 @@ namespace BookMarket.Controllers
             }
 
             var genre = await _context.Genres
-                .FirstOrDefaultAsync(m => m.GenreId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (genre == null)
             {
                 return NotFound();
@@ -91,7 +91,7 @@ namespace BookMarket.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("GenreId,GenreName")] Genre genre)
         {
-            if (id != genre.GenreId)
+            if (id != genre.Id)
             {
                 return NotFound();
             }
@@ -105,7 +105,7 @@ namespace BookMarket.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!GenreExists(genre.GenreId))
+                    if (!GenreExists(genre.Id))
                     {
                         return NotFound();
                     }
@@ -128,7 +128,7 @@ namespace BookMarket.Controllers
             }
 
             var genre = await _context.Genres
-                .FirstOrDefaultAsync(m => m.GenreId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (genre == null)
             {
                 return NotFound();
@@ -158,7 +158,7 @@ namespace BookMarket.Controllers
 
         private bool GenreExists(int id)
         {
-          return (_context.Genres?.Any(e => e.GenreId == id)).GetValueOrDefault();
+          return (_context.Genres?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

@@ -5,7 +5,7 @@ namespace BookMarket;
 
 public partial class Address
 {
-    public int AddressId { get; set; }
+    public int Id { get; set; }
 
     public string? AdrCity { get; set; }
 

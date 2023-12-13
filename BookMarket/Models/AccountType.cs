@@ -5,7 +5,7 @@ namespace BookMarket;
 
 public partial class AccountType
 {
-    public int TypeId { get; set; }
+    public int Id { get; set; }
 
     public string TypeName { get; set; } = null!;
 
