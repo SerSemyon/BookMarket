@@ -15,19 +15,15 @@ html {
 
 
 body {
-    /*font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     justify-content: center;
     align-items: center;
     margin-bottom: 5%;
-    background-image: url('../images/books.jpg');
-    background-size: cover;
-    background-position: center;*/
-
-
     margin-bottom: 60px;
     background-image: url('../images/books.jpg');
     background-size: cover;
     background-position: center;
+    background-attachment: fixed;
 }
 
 .pageback {
@@ -107,10 +103,6 @@ body {
     /* identical to box height */
     color: #000000;
 }
-
-/*tr:hover {
-    background-color: lightyellow;
-}*/
 
 .active-row {
     background-color: #a1a1a1;
@@ -226,7 +218,6 @@ body {
 
 .nav-link {
     background-color: rgba(250,250,250,0.75);
-    color: white;
     margin-right: 5px;
     border-radius: 0.5rem;
     border: 1px solid var(--grey-grey-4-border, #D1D6DC);
@@ -237,4 +228,50 @@ body {
     border-radius: 0.5rem;
     margin-left: auto;
     margin-right: auto;
+}
+
+.selected-user {
+    background-color: lightyellow;
+}
+
+table {
+    background-color: rgba(250,250,250,0.4);
+    border-radius: 0.2rem;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.pair-input {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 500px;
+}
+
+.first-in-pair {
+    width: 100%;
+}
+
+.second-in-pair {
+    width: 100%;
+}
+
+.error-alert {
+    font-family: 'Open Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 20px;
+    margin-top: 4px;
+    color: rgba(250,50,50,1);
+}
+
+.form-inputs {
+    background-image: url('../images/open_book.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position-x: left;
+    padding: 10%;
 }

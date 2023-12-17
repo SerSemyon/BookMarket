@@ -12,50 +12,66 @@
     </style>
 </head>
 <body>
-    <h2>Список пользователей</h2>
-    <div>
+    <div class="form-inputs">
+        <h2>Список пользователей</h2>
         <input type="hidden" id="id" />
-        <p>
-            Имя:<br />
-            <input id="accName" />
-        </p>
-        <p>
-            Фамилия:<br />
-            <input id="accLastName" />
-        </p>
-        <p>
-            Отчество:<br />
-            <input id="accMiddleName" />
-        </p>
-        <p>
-            Пол:<br />
-            <input id="accGender" />
-        </p>
-        <p>
+        <div class="pair-input">
+            <div class="first-in-pair">
+                Имя:<br />
+                <input id="accName"/>
+                <p class="error-alert" id="errorName"></p>
+            </div>
+            <div class="second-in-pair">
+                Фамилия:<br />
+                <input id="accLastName" />
+                <p class="error-alert" id="errorLastName"></p>
+            </div>
+        </div>
+
+        <div class="pair-input">
+            <div class="first-in-pair">
+                Отчество:<br />
+                <input id="accMiddleName" />
+                <p class="error-alert" id="errorMiddleName"></p>
+            </div>
+            <div class="second-in-pair">
+                Пол:<br />
+                <input id="accGender" />
+                <p class="error-alert" id="errorGender"></p>
+            </div>
+        </div>
+        <div>
             Дата рождения:<br />
-            <input id="accBirthday" type="date"/>
-        </p>
-        <p>
-            Электронная почта:<br />
-            <input id="accEmail" type="email"/>
-        </p>
-        <p> 
-            Телефон: <br />
-            <input id="accPhoneRegistration"/>
-        </p>
-        <p>
+            <input id="accBirthday" type="date" />
+            <p class="error-alert" id="errorBirthday"></p>
+        </div>
+
+        <div class="pair-input">
+            <div class="first-in-pair">
+                Электронная почта:<br />
+                <input id="accEmail" type="email" />
+                <p class="error-alert" id="errorEmail"></p>
+            </div>
+            <div class="second-in-pair">
+                Телефон: <br />
+                <input id="accPhoneRegistration" />
+                <p class="error-alert" id="errorPhone"></p>
+            </div>
+        </div>
+        <div>
             Пароль:<br />
-            <input id="accHashPassword" type="password"/>
-        </p>
-        <p>
+            <input id="accHashPassword" type="password" />
+            <p class="error-alert" id="errorPassword"></p>
+        </div>
+        <div>
             <button id="saveBtn" class="users-button">Сохранить</button>
             <button id="resetBtn" class="users-button">Сбросить</button>
-        </p>
+            <button class="users-button" onclick="handleDelete()">Удалить запись</button>
+        </div>
     </div>
     <table>
         <thead>
             <tr>
-                <!-- Тут по аналогии тэг <th> для каждого поля (!один пустой тэг в конце оставить) -->
                 <th>Имя</th>
                 <th>Фамилия</th>
                 <th>
@@ -81,9 +97,13 @@
     </table>
 
     <script>
-        // Тут свой базовый адрес контроллера в виде "api/название_контроллера/"
         var addressApi = "/api/Accounts/";
-
+        var regPhone = /^[+]?\d{11}$/;
+        var regEmail = /[a-zA-Z0-9._-]+@@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+/;
+        var regPassword = /(?=.*[0-9])(?=.*[!@@#$%^&*])(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z!@@#$%^&*]{6,}/g;
+        var regGender = /[мж]/;
+        var selectedId;
+        
         async function getAll() {
             const response = await fetch(addressApi, {
                 method: "GET",
@@ -133,6 +153,12 @@
             }
         }
 
+        function handleDelete() {
+            if (selectedId) {
+                deleteOne(selectedId);
+            }
+        }
+
         async function deleteOne(id) {
             const response = await fetch(`${addressApi}delete/${id}`, {
                 method: "DELETE",
@@ -140,10 +166,8 @@
             });
             if (response.ok === true) {
                 document.querySelector(`tr[data-rowid='${id}']`).remove();
-                let curId = document.getElementById("id").value
-                if (curId == id) {
-                    resetForm();
-                }
+                selectedId = null;
+                resetForm();
             }
             else {
                 const error = await response.json();
@@ -151,11 +175,20 @@
             }
         }
 
+        function selectRow(id) {
+            getOne(id);
+            if (selectedId) {
+                document.querySelector(`tr[data-rowid='${selectedId}']`).className = "";
+            }
+            selectedId = id;
+            document.querySelector(`tr[data-rowid='${id}']`).className = "selected-user";
+        }
+
         function row(itemRow) {
             const tr = document.createElement("tr");
             tr.setAttribute("data-rowid", itemRow.id);
+            tr.addEventListener("click", async () => await selectRow(itemRow.id));
 
-            // Тут свои по аналогии (по 3 строчки на поле)
             const nameTd = document.createElement("td");
             nameTd.append(itemRow.accName);
             tr.append(nameTd);
@@ -184,20 +217,6 @@
             phoneTd.append(itemRow.accPhoneRegistration);
             tr.append(phoneTd);
 
-            const linksTd = document.createElement("td");
-
-            const editLink = document.createElement("button");
-            editLink.append("Изменить");
-            editLink.addEventListener("click", async () => await getOne(itemRow.id));
-            linksTd.append(editLink);
-
-            const removeLink = document.createElement("button");
-            removeLink.append("Удалить");
-            removeLink.addEventListener("click", async () => await deleteOne(itemRow.id));
-
-            linksTd.append(removeLink);
-            tr.appendChild(linksTd);
-
             return tr;
         }
 
@@ -208,7 +227,6 @@
             });
             if (response.ok === true) {
                 const itemRow = await response.json();
-                // Тут свои поля по аналогии
                 document.getElementById("id").value = itemRow.id;
                 document.getElementById("accName").value = itemRow.accName;
                 document.getElementById("accLastName").value = itemRow.accLastName;
@@ -226,7 +244,6 @@
         }
 
         function resetForm() {
-            // Тут сброс всех остальных элементов поаналогии
             document.getElementById("id").value = "";
             document.getElementById("accName").value = "";
             document.getElementById("accLastName").value = "";
@@ -240,17 +257,101 @@
 
         document.getElementById("resetBtn").addEventListener("click", () => resetForm());
         document.getElementById("saveBtn").addEventListener("click", async () => {
+            var hasError = false;
+            accName = document.getElementById("accName").value;
+            accLastName = document.getElementById("accLastName").value;
+            accMiddleName = document.getElementById("accMiddleName").value;
+            accGender = document.getElementById("accGender").value;
+            accBirthday = document.getElementById("accBirthday").value;
+            accEmail = document.getElementById("accEmail").value;
+            accPhoneRegistration = document.getElementById("accPhoneRegistration").value;
+            accHashPassword = document.getElementById("accHashPassword").value;
+
+            if (accName.length < 1) {
+                document.getElementById("errorName").textContent = 'Введите имя';
+                hasError = true;
+            } else if (accName.length < 2) {
+                document.getElementById("errorName").textContent = 'Имя не может состоять из одного символа';
+                hasError = true;
+            } else {
+                document.getElementById("errorName").textContent = '';
+            }
+
+            if (accLastName.length < 1) {
+                document.getElementById("errorLastName").textContent = 'Введите фамилию';
+                hasError = true;
+            } else if (accLastName.length < 2) {
+                document.getElementById("errorLastName").textContent = 'Фамилия не может состоять из одного символа';
+                hasError = true;
+            } else {
+                document.getElementById("errorLastName").textContent = '';
+            }
+
+            if (accMiddleName.length < 1) {
+                document.getElementById("errorMiddleName").textContent = 'Введите отчество';
+                hasError = true;
+            } else if (accMiddleName.length < 2) {
+                document.getElementById("errorMiddleName").textContent = 'Отчество не может состоять из одного символа';
+                hasError = true;
+            } else {
+                document.getElementById("errorMiddleName").textContent = '';
+            }
+
+            if (!regGender.test(String(accGender).toLowerCase())) {
+                document.getElementById("errorGender").textContent = 'Введите пол м/ж';
+                hasError = true;
+            } else {
+                document.getElementById("errorGender").textContent = '';
+            }
+
+            let date = new Date(document.getElementById("accBirthday").value);
+            let currentDate = new Date();
+            let difference = Math.ceil(Math.abs(currentDate.getTime() - date.getTime()) / (1000 * 3600 * 24 * 365));
+            if (date == 'Invalid Date') {
+                document.getElementById("errorBirthday").textContent = 'Некорректная дата';
+                hasError = true;
+            } else if (difference < 14) {
+                document.getElementById("errorBirthday").textContent = 'Вам должно быть минимум 14 лет';
+                hasError = true;
+            } else {
+                document.getElementById("errorBirthday").textContent = '';
+            }
+
+            if (!regEmail.test(String(accEmail).toLowerCase())) {
+                document.getElementById("errorEmail").textContent = 'Некорректный email';
+                hasError = true;
+            } else {
+                document.getElementById("errorEmail").textContent = '';
+            }
+
+            if (!regPhone.test(String(accPhoneRegistration).toLowerCase())) {
+                document.getElementById("errorPhone").textContent = 'Телефон должен состоять из 11 цифр';
+                hasError = true;
+            } else {
+                document.getElementById("errorPhone").textContent = '';
+            }
+
+            if (!regPassword.test(accHashPassword)) {
+                document.getElementById("errorPassword").textContent = 'Пароль должен содержать от 6 символов с использованием цифр, спец. символов, латиницы, наличием строчных и прописных букв';
+                hasError = true;
+            } else {
+                document.getElementById("errorPassword").textContent = '';
+            }
+
+            if (hasError) {
+                return;
+            }
+
             const id = document.getElementById("id").value;
             const currentItem = {
-            // Тут свои значения по аналогии
-                accName: document.getElementById("accName").value,
-                accLastName: document.getElementById("accLastName").value,
-                accMiddleName: document.getElementById("accMiddleName").value,
-                accGender: document.getElementById("accGender").value,
-                accBirthday: document.getElementById("accBirthday").value,
-                accEmail: document.getElementById("accEmail").value,
-                accPhoneRegistration: document.getElementById("accPhoneRegistration").value,
-                accHashPassword: document.getElementById("accHashPassword").value
+                accName,
+                accLastName,
+                accMiddleName,
+                accGender,
+                accBirthday,
+                accEmail,
+                accPhoneRegistration,
+                accHashPassword
             }
             if (id === "")
                 await createOne(currentItem);

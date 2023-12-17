@@ -62,7 +62,7 @@ namespace BookMarket.Controllers
             account.AccBirthday = newData.AccBirthday;
             account.AccEmail = newData.AccEmail;
             account.AccPhoneRegistration = newData.AccPhoneRegistration;
-            account.AccHashPassword = newData.AccHashPassword;
+            account.AccHashPassword = Program.HashPassword(newData.AccHashPassword);
 
             _context.Entry(account).State = EntityState.Modified;
 
@@ -90,6 +90,7 @@ namespace BookMarket.Controllers
         public async Task<ActionResult<Account>> PostAccount([FromBody]Account account)
         {
             account.TypeId = 3;
+            account.AccHashPassword = Program.HashPassword(account.AccHashPassword);
             _context.Accounts.Add(account);
             await _context.SaveChangesAsync();
 
