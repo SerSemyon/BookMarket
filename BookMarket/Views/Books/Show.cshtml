@@ -5,7 +5,13 @@
     int rat = Convert.ToInt32(Model.BookRating);
 }
 
-<img src="D:\intro_logo.svg" alt="Изображение не найдено">
+@if (Model.BookImagePath != null)
+{
+    <img src="@Url.Content("~/images/covers/" + Model.BookImagePath.ToString())"
+         Height="200"
+         Width="300"
+         class="coverBookImage" />
+}
 
 <h1>@Html.DisplayFor(model => model.BookName)</h1>
 
@@ -20,7 +26,7 @@
     {
         <a>&#x2730</a>
     }
-    <a class="nav-link text-dark" asp-controller="Books" asp-action="AddFavouriteBook">&#x1f499;</a>
+    <a asp-controller="Books" asp-action="AddFavouriteBook">&#x1f499;</a>
     <dl class="row">
         @if (Model.BookAmount == 0)
         {
@@ -65,7 +71,6 @@
 <ul>
     @foreach (var comment in ViewBag.feedbacks)
     {
-        // wefwef
         <li>
             @for (int i = 0; i < @Convert.ToInt32(comment.FbRating); i++)
             {

@@ -19,11 +19,109 @@ namespace BookMarket.Controllers
             _context = new DbbookMarketContext();
         }
 
-        // GET: Accounts
+        [Route("api/Accounts")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Account>>> GetAccounts()
+        {
+            return await _context.Accounts.ToListAsync();
+        }
+
+        [Route("api/Accounts/{id?}")]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Account>> GetAccount(int id)
+        {
+            var account = await _context.Accounts.FindAsync(id);
+
+            if (account == null)
+            {
+                return NotFound();
+            }
+
+            return account;
+        }
+
+        [Route("api/Accounts/put/{id?}")]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutAccount(int id, [FromBody]Account newData)
+        {
+            if (id != newData.Id)
+            {
+                return BadRequest();
+            }
+
+            Account account = _context.Accounts.FirstOrDefault(x => x.Id == id);
+            if (account == null)
+            {
+                return BadRequest();
+            }
+
+            account.AccName = newData.AccName;
+            account.AccLastName = newData.AccLastName;
+            account.AccMiddleName = newData.AccMiddleName;
+            account.AccGender = newData.AccGender;
+            account.AccBirthday = newData.AccBirthday;
+            account.AccEmail = newData.AccEmail;
+            account.AccPhoneRegistration = newData.AccPhoneRegistration;
+            account.AccHashPassword = newData.AccHashPassword;
+
+            _context.Entry(account).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!AccountExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        [Route("api/Accounts/post")]
+        [HttpPost]
+        public async Task<ActionResult<Account>> PostAccount([FromBody]Account account)
+        {
+            account.TypeId = 3;
+            _context.Accounts.Add(account);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetAccount", new { id = account.Id }, account);
+        }
+
+        [Route("api/Accounts/delete/{id?}")]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAccount(int id)
+        {
+            var account = await _context.Accounts.FindAsync(id);
+            if (account == null)
+            {
+                return NotFound();
+            }
+
+            _context.Accounts.Remove(account);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        private bool AccountExists(int id)
+        {
+            return _context.Accounts.Any(e => e.Id == id);
+        }
+
+        [Route("Accounts")]
         public async Task<IActionResult> Index()
         {
             var dbbookMarketContext = _context.Accounts.Include(a => a.Type);
-            return View(await dbbookMarketContext.ToListAsync());
+            return View();
         }
 
         // GET: Accounts/Details/5
@@ -173,11 +271,6 @@ namespace BookMarket.Controllers
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool AccountExists(int id)
-        {
-          return (_context.Accounts?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

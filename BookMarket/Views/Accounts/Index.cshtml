@@ -1,83 +1,265 @@
-﻿@model IEnumerable<BookMarket.Account>
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        td {
+            padding: 5px;
+        }
 
-@{
-    ViewData["Title"] = "Index";
-}
+        button {
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Список пользователей</h2>
+    <div>
+        <input type="hidden" id="id" />
+        <p>
+            Имя:<br />
+            <input id="accName" />
+        </p>
+        <p>
+            Фамилия:<br />
+            <input id="accLastName" />
+        </p>
+        <p>
+            Отчество:<br />
+            <input id="accMiddleName" />
+        </p>
+        <p>
+            Пол:<br />
+            <input id="accGender" />
+        </p>
+        <p>
+            Дата рождения:<br />
+            <input id="accBirthday" type="date"/>
+        </p>
+        <p>
+            Электронная почта:<br />
+            <input id="accEmail" type="email"/>
+        </p>
+        <p> 
+            Телефон: <br />
+            <input id="accPhoneRegistration"/>
+        </p>
+        <p>
+            Пароль:<br />
+            <input id="accHashPassword" type="password"/>
+        </p>
+        <p>
+            <button id="saveBtn" class="users-button">Сохранить</button>
+            <button id="resetBtn" class="users-button">Сбросить</button>
+        </p>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <!-- Тут по аналогии тэг <th> для каждого поля (!один пустой тэг в конце оставить) -->
+                <th>Имя</th>
+                <th>Фамилия</th>
+                <th>
+                    Отчество
+                </th>
+                <th>
+                    Пол
+                </th>
+                <th>
+                    Дата рождения
+                </th>
+                <th>
+                    Электронная почта
+                </th>
+                <th>
+                    Телефон
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 
-<h1>Index</h1>
+    <script>
+        // Тут свой базовый адрес контроллера в виде "api/название_контроллера/"
+        var addressApi = "/api/Accounts/";
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.AccName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AccLastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AccMiddleName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AccGender)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AccBirthday)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AccEmail)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AccPhoneRegistration)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AccHashPassword)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Type)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.AccName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AccLastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AccMiddleName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AccGender)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AccBirthday)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AccEmail)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AccPhoneRegistration)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AccHashPassword)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type.TypeName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+        async function getAll() {
+            const response = await fetch(addressApi, {
+                method: "GET",
+                headers: { "Accept": "application/json" }
+            });
+            if (response.ok === true) {
+                const elements = await response.json();
+                const rows = document.querySelector("tbody");
+                elements.forEach(element => rows.append(row(element)));
+            }
+        }
+
+        async function createOne(newItem) {
+            console.log(newItem)
+
+            const response = await fetch(`${addressApi}post`, {
+                method: "POST",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify(newItem)
+            });
+            if (response.ok === true) {
+                const itemRow = await response.json();
+                document.querySelector("tbody").append(row(itemRow));
+            }
+            else {
+                const error = await response.json();
+                console.log(error.message);
+            }
+        }
+
+        async function editOne(id, newData) {
+            let newItem = {
+                id
+            }
+            Object.assign(newItem, newData);
+            const response = await fetch(`${addressApi}put/${id}`, {
+                method: "PUT",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify(newItem)
+            });
+            if (response.ok === true) {
+                document.querySelector(`tr[data-rowid='${id}']`).replaceWith(row(newItem));
+            }
+            else {
+                const error = await response.json();
+                console.log(error.message);
+            }
+        }
+
+        async function deleteOne(id) {
+            const response = await fetch(`${addressApi}delete/${id}`, {
+                method: "DELETE",
+                headers: { "Accept": "application/json" }
+            });
+            if (response.ok === true) {
+                document.querySelector(`tr[data-rowid='${id}']`).remove();
+                let curId = document.getElementById("id").value
+                if (curId == id) {
+                    resetForm();
+                }
+            }
+            else {
+                const error = await response.json();
+                console.log(error.message);
+            }
+        }
+
+        function row(itemRow) {
+            const tr = document.createElement("tr");
+            tr.setAttribute("data-rowid", itemRow.id);
+
+            // Тут свои по аналогии (по 3 строчки на поле)
+            const nameTd = document.createElement("td");
+            nameTd.append(itemRow.accName);
+            tr.append(nameTd);
+
+            const lastNameTd = document.createElement("td");
+            lastNameTd.append(itemRow.accLastName);
+            tr.append(lastNameTd);
+
+            const middleNameTd = document.createElement("td");
+            middleNameTd.append(itemRow.accMiddleName);
+            tr.append(middleNameTd);
+
+            const genderTd = document.createElement("td");
+            genderTd.append(itemRow.accGender);
+            tr.append(genderTd);
+
+            const birhdayTd = document.createElement("td");
+            birhdayTd.append(itemRow.accBirthday);
+            tr.append(birhdayTd);
+
+            const emailTd = document.createElement("td");
+            emailTd.append(itemRow.accEmail);
+            tr.append(emailTd);
+
+            const phoneTd = document.createElement("td");
+            phoneTd.append(itemRow.accPhoneRegistration);
+            tr.append(phoneTd);
+
+            const linksTd = document.createElement("td");
+
+            const editLink = document.createElement("button");
+            editLink.append("Изменить");
+            editLink.addEventListener("click", async () => await getOne(itemRow.id));
+            linksTd.append(editLink);
+
+            const removeLink = document.createElement("button");
+            removeLink.append("Удалить");
+            removeLink.addEventListener("click", async () => await deleteOne(itemRow.id));
+
+            linksTd.append(removeLink);
+            tr.appendChild(linksTd);
+
+            return tr;
+        }
+
+        async function getOne(id) {
+            const response = await fetch(`${addressApi}${id}`, {
+                method: "GET",
+                headers: { "Accept": "application/json" }
+            });
+            if (response.ok === true) {
+                const itemRow = await response.json();
+                // Тут свои поля по аналогии
+                document.getElementById("id").value = itemRow.id;
+                document.getElementById("accName").value = itemRow.accName;
+                document.getElementById("accLastName").value = itemRow.accLastName;
+                document.getElementById("accMiddleName").value = itemRow.accMiddleName;
+                document.getElementById("accGender").value = itemRow.accGender;
+                document.getElementById("accBirthday").value = itemRow.accBirthday;
+                document.getElementById("accEmail").value = itemRow.accEmail;
+                document.getElementById("accPhoneRegistration").value = itemRow.accPhoneRegistration;
+                document.getElementById("accHashPassword").value = ""; 
+            }
+            else {
+                const error = await response.json();
+                console.log(error.message);
+            }
+        }
+
+        function resetForm() {
+            // Тут сброс всех остальных элементов поаналогии
+            document.getElementById("id").value = "";
+            document.getElementById("accName").value = "";
+            document.getElementById("accLastName").value = "";
+            document.getElementById("accMiddleName").value = "";
+            document.getElementById("accGender").value = "";
+            document.getElementById("accBirthday").value = "";
+            document.getElementById("accEmail").value = "";
+            document.getElementById("accPhoneRegistration").value = "";
+            document.getElementById("accHashPassword").value = "";
+        }
+
+        document.getElementById("resetBtn").addEventListener("click", () => resetForm());
+        document.getElementById("saveBtn").addEventListener("click", async () => {
+            const id = document.getElementById("id").value;
+            const currentItem = {
+            // Тут свои значения по аналогии
+                accName: document.getElementById("accName").value,
+                accLastName: document.getElementById("accLastName").value,
+                accMiddleName: document.getElementById("accMiddleName").value,
+                accGender: document.getElementById("accGender").value,
+                accBirthday: document.getElementById("accBirthday").value,
+                accEmail: document.getElementById("accEmail").value,
+                accPhoneRegistration: document.getElementById("accPhoneRegistration").value,
+                accHashPassword: document.getElementById("accHashPassword").value
+            }
+            if (id === "")
+                await createOne(currentItem);
+            else
+                await editOne(id, currentItem);
+            resetForm();
+        });
+
+        getAll();
+    </script>
+</body>
+</html>
